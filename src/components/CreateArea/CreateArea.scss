@@ -1,0 +1,87 @@
+.createAreaForm {
+   position: relative;
+   width: 600px;
+   margin: 32px auto 50px auto;
+   background: #f7f1ed;
+   padding: 7px;
+   border-radius: 7px;
+   box-shadow: 0 1px 7px rgb(128, 128, 128);
+   input {
+      background: #f7f1ed;
+      color: #2f365f;
+      font-family: monospace;
+      font-size: 1.2rem;
+      font-weight: 600;
+      width: 90%;
+      border: none;
+      padding: 4px 10px;
+      margin: 20px auto;
+      outline: none;
+      resize: none;
+   }
+   textarea {
+      background: #f7f1ed;
+      color: #2f365f;
+      font-family: monospace;
+      font-size: 1rem;
+      width: 90%;
+      border: none;
+      padding: 4px 10px;
+      outline: none;
+      font-size: 1rem;
+      resize: none;
+   }
+   .plusBtn {
+      position: absolute;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      right: 18px;
+      bottom: -18px;
+      color: #fff;
+      border: none;
+      border-radius: 50%;
+      width: 36px;
+      height: 36px;
+      box-shadow: 0 1px 3px rgb(165, 165, 165);
+      outline: none;
+      transition: all 0.2s ease-in-out;
+      i {
+         color: #000;
+         font-size: 25px;
+      }
+   }
+   .inputFile {
+      position: absolute;
+
+      bottom: -18px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      border-radius: 50%;
+      label {
+         cursor: pointer;
+         display: flex;
+         justify-content: center;
+         align-items: center;
+         border-radius: 50%;
+         background: #febeb0;
+         width: 36px;
+         height: 36px;
+         i {
+            font-size: 25px;
+         }
+      }
+      input {
+         opacity: 0;
+         visibility: hidden;
+         position: absolute;
+      }
+   }
+   .inputTXT {
+      right: 68px;
+   }
+   .inputIMG {
+      right: 120px;
+   }
+}

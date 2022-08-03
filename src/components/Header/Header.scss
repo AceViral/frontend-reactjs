@@ -1,0 +1,19 @@
+.header {
+   background: #f7f1ed;
+   margin: auto -10px;
+   padding: 10px 20px;
+   box-shadow: 0 0 2px 0 rgb(110, 110, 110);
+   flex-direction: row;
+   display: flex;
+   align-items: center;
+   font-size: 50px;
+   i {
+      margin: 0 10px;
+      color: #febeb0;
+   }
+   h1 {
+      color: #5f6368;
+      font-size: 1.5rem;
+      font-weight: 600;
+   }
+}

@@ -1,0 +1,65 @@
+.LoginWrap {
+   padding: 100px;
+   display: flex;
+   justify-content: center;
+   align-items: center;
+   .Form {
+      width: 340px;
+      padding: 40px 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      background: #fbe0c3;
+      color: #344648;
+      border-radius: 24px;
+      -webkit-box-shadow: 0px 5px 10px 2px rgba(34, 60, 80, 0.2);
+      -moz-box-shadow: 0px 5px 10px 2px rgba(34, 60, 80, 0.2);
+      box-shadow: 0px 5px 10px 2px rgba(34, 60, 80, 0.2);
+      h1 {
+         font-size: 20px;
+         margin-bottom: 1vh;
+      }
+      .Field {
+         font-family: "Roboto", sans-serif;
+         font-size: 15px;
+         background: none;
+         display: block;
+         margin: 10px auto;
+         text-align: center;
+         border: 2px solid #344648;
+         color: #344648;
+         padding: 14px 10px;
+         width: 200px;
+         outline: none;
+         border-radius: 24px;
+         transition: 0.25s;
+         &:hover,
+         &:focus {
+            width: 280px;
+            border-color: #2ecc71;
+         }
+      }
+      .ErrorBlock {
+         display: flex;
+         justify-content: center;
+         align-items: center;
+         height: 1vh;
+         p {
+            font-size: 13px;
+            color: rgb(255, 80, 80);
+         }
+      }
+      .SubmitButton {
+         background: none;
+         font-size: 15px;
+         font-family: "Roboto", sans-serif;
+         background: none;
+         display: block;
+         margin: 10px auto 20px auto;
+         text-align: center;
+         padding: 14px 40px;
+         outline: none;
+         border-radius: 24px;
+      }
+   }
+}

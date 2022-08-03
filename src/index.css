@@ -1,0 +1,15 @@
+body {
+   margin: 0;
+   padding: 0;
+   box-sizing: border-box;
+   background: #f7f1ed;
+   overflow-x: hidden;
+   font-family: "Roboto", sans-serif;
+}
+html {
+   font-family: sans-serif;
+}
+code {
+   font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
+      monospace;
+}
