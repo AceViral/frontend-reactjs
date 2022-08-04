@@ -1,99 +1,68 @@
-import axios from "axios";
 import React, { useEffect, useState } from "react";
 import Header from "./Header";
-import Count from "./Count";
 import CreateArea from "./CreateArea";
 import Note from "./Note";
+import { noteAPI } from "../api/api";
+import { useNavigate } from "react-router-dom";
 
 function MainApp() {
    const [notes, setNotes] = useState([]);
-   const hostUrl = "http://localhost:8080/v1/";
-
-   const signup = async () => {
-      try {
-         const fetchData = async () => {
-            axios.post(
-               `http://localhost:8080/signup`,
-               {
-                  username: "root1",
-                  password: "root1",
-                  email: "test1@mail.ru",
-               },
-               { withCredentials: true }
-            );
-         };
-         fetchData();
-      } catch (error) {
-         console.log(error, "Ошибка при регистрации");
-      }
-   };
-
+   const navigate = useNavigate();
+   // Монтирование компонента
    useEffect(() => {
       try {
-         getNotes();
-         signup();
+         if (!window.localStorage.getItem("token")) {
+            navigate("/");
+         }
+         noteAPI.getNotes(setNotes);
       } catch (error) {
          console.log(error, "Ошибка при загрузке данных");
       }
-   }, [setNotes]);
+   }, [setNotes, navigate]);
 
-   const getNotes = async () => {
-      await axios
-         .get(hostUrl + "note", {
-            headers: {
-               Authorization: "GevuhUhKh5mjifmAfyq8rv9u4LIxGhGy",
-            },
-         })
-         .then((res) => {
-            setNotes(res.data);
-         });
+   // Функция добавления записки
+   const addNote = (title = "", body = "") => {
+      try {
+         noteAPI.addNote(title, body);
+         noteAPI.getNotes(setNotes);
+      } catch (error) {
+         console.log(error, "Ошибка при изменении");
+      }
    };
-   const deleteNoteFunction = async (id) => {
-      await axios.delete(hostUrl + `note/delete?id=${id}`);
-      setNotes(
-         notes.filter((note) => {
-            return note.id !== id;
-         })
-      );
-   };
+
+   // Функция удаления записки
    const deleteNote = (id) => {
       try {
-         deleteNoteFunction(id);
+         noteAPI.deleteNote(id);
+         setNotes(
+            notes.filter((note) => {
+               return note.id !== id;
+            })
+         );
       } catch (error) {
          console.log(error, "Ошибка при удалении");
       }
    };
+
+   // Функция изменения записки
    const changeNote = (id, newTitle, newBody) => {
       try {
          if (newTitle === "" && newBody === "") {
-            deleteNoteFunction(id);
+            noteAPI.deleteNote(id);
+            setNotes(
+               notes.filter((note) => {
+                  return note.id !== id;
+               })
+            );
          } else {
-            const fetchData = async () => {
-               await axios.patch(hostUrl + `note/update?id=${id}`, {
-                  title: newTitle,
-                  body: newBody,
-               });
-            };
-            fetchData();
+            noteAPI.changeNote(id, newTitle, newBody);
          }
       } catch (error) {
          console.log(error, "Ошибка при изменении");
       }
    };
-   const addNote = (title = "", body = "") => {
-      try {
-         const fetchData = async () => {
-            axios.post(hostUrl + `note/create`, {
-               title: title,
-               body: body,
-            });
-         };
-         fetchData();
-         getNotes();
-      } catch (error) {
-         console.log(error, "Ошибка при изменении");
-      }
-   };
+
+   // Функции управления input и textarea
    const handleChangeBody = (id, e) => {
       setNotes(
          notes.map((note) =>
@@ -112,13 +81,6 @@ function MainApp() {
    return (
       <div className="App">
          <Header />
-         <Count
-            count={
-               notes.length === 0
-                  ? "Empty"
-                  : `Showing ${notes.length} Notes in Database`
-            }
-         />
          <CreateArea addNote={addNote} />
          {notes.map((note) => (
             <Note

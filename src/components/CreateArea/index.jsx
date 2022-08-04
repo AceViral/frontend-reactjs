@@ -97,7 +97,7 @@ function CreateArea({ addNote }) {
                           cursor: "auto",
                           transform: "rotate(45deg)",
                        }
-                     : { background: "#febeb0", cursor: "pointer" }
+                     : { background: "#6f63ad", cursor: "pointer" }
                }
                className="plusBtn"
             >

@@ -1,5 +1,5 @@
 .note {
-   background: #f7f1ed;
+   background: #f3f3f3;
    width: 240px;
    border-radius: 7px;
    box-shadow: 0 2px 5px rgb(175, 175, 175);
@@ -10,6 +10,7 @@
    transition: all 0.2s ease-in-out;
    .editTag {
       p {
+         color: #6f63ad;
          position: absolute;
          transform: translateY(-150%) translateX(100%);
          font-family: monospace;
@@ -20,7 +21,8 @@
    .titleWrap {
       h1,
       textarea {
-         background: #f7f1ed;
+         color: #6f63ad;
+         background: #f3f3f3;
          font-family: monospace;
          margin: 0;
          padding: 0;
@@ -33,17 +35,18 @@
    .textWrap {
       p,
       textarea {
-         background: #f7f1ed;
+         color: #6f63ad;
+         background: #f3f3f3;
          font-family: monospace;
          margin: 0;
          padding: 0;
          font-size: 1rem;
-         color: #2f365f;
          white-space: pre-wrap;
          word-wrap: break-word;
       }
    }
    textarea {
+      color: #6f63ad;
       width: 100%;
       border: none;
       outline: none;
@@ -62,18 +65,19 @@
          background: none;
          outline: none;
          i {
+            color: #808080;
             font-size: 25px;
          }
          .bx-trash-alt {
             transition: all 0.1s ease-in-out;
             &:hover {
-               color: #febeb0;
+               color: #6f63ad;
             }
          }
          .bx-edit-alt {
             transition: all 0.1s ease-in-out;
             &:hover {
-               color: #febeb0;
+               color: #6f63ad;
             }
          }
       }

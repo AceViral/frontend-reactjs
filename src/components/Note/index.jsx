@@ -64,7 +64,7 @@ const Note = ({
             <button onClick={() => modificate()}>
                <i
                   className="bx bx-edit-alt"
-                  style={{ color: editMode ? "#febeb0" : "none" }}
+                  style={{ color: editMode ? "#6f63ad" : "none" }}
                ></i>
             </button>
          </div>

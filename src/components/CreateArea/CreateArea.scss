@@ -2,26 +2,26 @@
    position: relative;
    width: 600px;
    margin: 32px auto 50px auto;
-   background: #f7f1ed;
+   background: #f3f3f3;
    padding: 7px;
    border-radius: 7px;
    box-shadow: 0 1px 7px rgb(128, 128, 128);
    input {
-      background: #f7f1ed;
-      color: #2f365f;
+      background: #f3f3f3;
+      color: #6f63ad;
       font-family: monospace;
-      font-size: 1.2rem;
+      font-size: 1.1rem;
       font-weight: 600;
       width: 90%;
       border: none;
       padding: 4px 10px;
-      margin: 20px auto;
+      margin: 20px auto 0 auto;
       outline: none;
       resize: none;
    }
    textarea {
-      background: #f7f1ed;
-      color: #2f365f;
+      background: #f3f3f3;
+      color: #6f63ad;
       font-family: monospace;
       font-size: 1rem;
       width: 90%;
@@ -47,13 +47,12 @@
       outline: none;
       transition: all 0.2s ease-in-out;
       i {
-         color: #000;
+         color: #f3f3f3;
          font-size: 25px;
       }
    }
    .inputFile {
       position: absolute;
-
       bottom: -18px;
       display: flex;
       justify-content: center;
@@ -65,11 +64,12 @@
          justify-content: center;
          align-items: center;
          border-radius: 50%;
-         background: #febeb0;
+         background: #6f63ad;
          width: 36px;
          height: 36px;
          i {
-            font-size: 25px;
+            color: #f3f3f3;
+            font-size: 23px;
          }
       }
       input {

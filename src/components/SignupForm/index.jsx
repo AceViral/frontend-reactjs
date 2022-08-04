@@ -2,10 +2,10 @@ import React, { useEffect } from "react";
 import { Formik, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import { Field, Form } from "formik";
-import "./LoginForm.scss";
-import { useNavigate } from "react-router-dom";
+import "./SignupForm.scss";
+import { useNavigate, Link } from "react-router-dom";
 import { authAPI } from "../../api/api";
-const LoginForm = () => {
+const SignupForm = () => {
    const navigate = useNavigate();
    useEffect(() => {
       if (window.localStorage.getItem("token")) {
@@ -16,37 +16,39 @@ const LoginForm = () => {
       <Formik
          initialValues={{
             username: "",
+            email: "",
             password: "",
          }}
          validationSchema={Yup.object().shape({
             username: Yup.string().required("Please enter your username"),
+            email: Yup.string().required("Please enter your email"),
             password: Yup.string().required("Please enter your password"),
          })}
-         onSubmit={(values, { setSubmitting, setStatus }) => {
+         onSubmit={(values, { setSubmitting }) => {
             try {
-               authAPI.login(values.username, values.password).then((res) => {
-                  if (res.data.status === 200) {
-                     window.localStorage.setItem("token", res.data.data.token);
-                     navigate("/", { replace: true });
-                  }
-               });
-               setSubmitting(false);
+               authAPI
+                  .signup(values.username, values.password, values.email)
+                  .then((res) => {
+                     if (res.data.status === 201) {
+                        navigate("/login");
+                        setSubmitting(false);
+                     }
+                  });
             } catch (error) {
-               setStatus(error);
-               console.log(error, "Ошибка при аутентификации");
+               console.log(error, "Ошибка при регистрации");
             }
          }}
       >
-         {({ values, errors, status, touched, handleSubmit, isSubmitting }) => {
+         {({ values, errors, touched, handleSubmit, isSubmitting }) => {
             return (
-               <div className="LoginWrap">
+               <div className="SignupWrap">
                   <Form
                      name="contact"
                      method="post"
                      onSubmit={handleSubmit}
                      className="Form"
                   >
-                     <h1>Login</h1>
+                     <h1>Signup</h1>
                      <Field
                         type="username"
                         name="username"
@@ -61,7 +63,20 @@ const LoginForm = () => {
                            {(msg) => <p>{msg}</p>}
                         </ErrorMessage>
                      </div>
-
+                     <Field
+                        type="email"
+                        name="email"
+                        autoComplete="email"
+                        placeholder="Email"
+                        error={errors.email && touched.email}
+                        value={values.email}
+                        className="Field"
+                     />
+                     <div className="ErrorBlock">
+                        <ErrorMessage name="email">
+                           {(msg) => <p>{msg}</p>}
+                        </ErrorMessage>
+                     </div>
                      <Field
                         type="password"
                         name="password"
@@ -76,19 +91,21 @@ const LoginForm = () => {
                            {(msg) => <p>{msg}</p>}
                         </ErrorMessage>
                      </div>
-                     <p>{status}</p>
+
                      <button
                         type="submit"
                         disabled={
                            (errors.username && touched.username) ||
-                           (errors.password && touched.password)
+                           (errors.password && touched.password) ||
+                           (errors.email && touched.email)
                               ? true
                               : false
                         }
                         className="SubmitButton"
                         style={
                            (errors.username && touched.username) ||
-                           (errors.password && touched.password)
+                           (errors.password && touched.password) ||
+                           (errors.email && touched.email)
                               ? {
                                    cursor: "auto",
                                    border: "2px solid #ff5050",
@@ -101,6 +118,12 @@ const LoginForm = () => {
                      >
                         {isSubmitting ? `Submiting...` : `Submit`}
                      </button>
+                     <div className="decriptionBlock">
+                        <p>
+                           if you already have an account:{" "}
+                           <Link to="login">Login</Link>
+                        </p>
+                     </div>
                   </Form>
                </div>
             );
@@ -109,4 +132,4 @@ const LoginForm = () => {
    );
 };
 
-export default LoginForm;
+export default SignupForm;
