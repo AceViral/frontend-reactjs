@@ -4,8 +4,8 @@ import "boxicons";
 function Header() {
    return (
       <div className="header">
-         <i className="bx bx-cheese"></i>
-         <h1>MyCheese</h1>
+         <i className="bx bx-heart"></i>
+         <h1>Purple</h1>
       </div>
    );
 }

@@ -1,11 +1,16 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Formik, ErrorMessage } from "formik";
 import * as Yup from "yup";
-import { Field, Form } from "formik";
-import "./SignupForm.scss";
 import { useNavigate, Link } from "react-router-dom";
 import { authAPI } from "../../api/api";
+import {
+   FormField,
+   SignForm,
+   SubmitButton,
+   SignWrap,
+} from "../../assets/SignStyles";
 const SignupForm = () => {
+   const [error, setError] = useState(false);
    const navigate = useNavigate();
    useEffect(() => {
       if (window.localStorage.getItem("token")) {
@@ -20,8 +25,14 @@ const SignupForm = () => {
             password: "",
          }}
          validationSchema={Yup.object().shape({
-            username: Yup.string().required("Please enter your username"),
-            email: Yup.string().required("Please enter your email"),
+            username: Yup.string()
+               .min(2, "Your username is too short")
+               .max(255, "Too Long!")
+               .required("Please enter your username"),
+            email: Yup.string()
+               .email("The email is incorrect")
+               .max(255, "Too Long!")
+               .required("Please enter your email"),
             password: Yup.string().required("Please enter your password"),
          })}
          onSubmit={(values, { setSubmitting }) => {
@@ -30,9 +41,14 @@ const SignupForm = () => {
                   .signup(values.username, values.password, values.email)
                   .then((res) => {
                      if (res.data.status === 201) {
-                        navigate("/login");
+                        setError(false);
                         setSubmitting(false);
+                        navigate("/login");
                      }
+                  })
+                  .catch((error) => {
+                     setError(true);
+                     setSubmitting(false);
                   });
             } catch (error) {
                console.log(error, "Ошибка при регистрации");
@@ -41,91 +57,92 @@ const SignupForm = () => {
       >
          {({ values, errors, touched, handleSubmit, isSubmitting }) => {
             return (
-               <div className="SignupWrap">
-                  <Form
+               <SignWrap>
+                  <SignForm
                      name="contact"
                      method="post"
                      onSubmit={handleSubmit}
                      className="Form"
                   >
+                     {error && (
+                        <div
+                           className="error"
+                           onClick={() => {
+                              setError(false);
+                           }}
+                        >
+                           <i className="bx bx-error-alt bx-tada"></i>
+                           <h1>WARNING</h1>
+                           <p>The account has already been registered</p>
+                        </div>
+                     )}
                      <h1>Signup</h1>
-                     <Field
+                     <FormField
                         type="username"
                         name="username"
                         autoComplete="username"
                         placeholder="Username"
                         error={errors.username && touched.username}
                         value={values.username}
-                        className="Field"
                      />
                      <div className="ErrorBlock">
                         <ErrorMessage name="username">
                            {(msg) => <p>{msg}</p>}
                         </ErrorMessage>
                      </div>
-                     <Field
+                     <FormField
                         type="email"
                         name="email"
                         autoComplete="email"
                         placeholder="Email"
                         error={errors.email && touched.email}
                         value={values.email}
-                        className="Field"
                      />
                      <div className="ErrorBlock">
                         <ErrorMessage name="email">
                            {(msg) => <p>{msg}</p>}
                         </ErrorMessage>
                      </div>
-                     <Field
+                     <FormField
                         type="password"
                         name="password"
                         autoComplete="password"
                         placeholder="Password"
                         error={errors.password && touched.password}
                         value={values.password}
-                        className="Field"
                      />
                      <div className="ErrorBlock">
                         <ErrorMessage name="password">
                            {(msg) => <p>{msg}</p>}
                         </ErrorMessage>
                      </div>
-
-                     <button
+                     <SubmitButton
                         type="submit"
-                        disabled={
-                           (errors.username && touched.username) ||
+                        color={
+                           (errors.email && touched.email) ||
                            (errors.password && touched.password) ||
-                           (errors.email && touched.email)
+                           (errors.username && touched.username)
+                              ? "true"
+                              : ""
+                        }
+                        disabled={
+                           (errors.email && touched.email) ||
+                           (errors.password && touched.password) ||
+                           (errors.username && touched.username)
                               ? true
                               : false
                         }
-                        className="SubmitButton"
-                        style={
-                           (errors.username && touched.username) ||
-                           (errors.password && touched.password) ||
-                           (errors.email && touched.email)
-                              ? {
-                                   cursor: "auto",
-                                   border: "2px solid #ff5050",
-                                }
-                              : {
-                                   cursor: "pointer",
-                                   border: "2px solid #2ecc71",
-                                }
-                        }
                      >
                         {isSubmitting ? `Submiting...` : `Submit`}
-                     </button>
+                     </SubmitButton>
                      <div className="decriptionBlock">
                         <p>
                            if you already have an account:{" "}
                            <Link to="login">Login</Link>
                         </p>
                      </div>
-                  </Form>
-               </div>
+                  </SignForm>
+               </SignWrap>
             );
          }}
       </Formik>

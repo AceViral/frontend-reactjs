@@ -14,20 +14,20 @@ const instance = axios.create({
 });
 
 export const noteAPI = {
-   getNotes(setNotes) {
-      return instance.get("note").then((res) => setNotes(res.data));
+   async getNotes(setNotes) {
+      return await instance.get("note").then((res) => setNotes(res.data));
    },
-   addNote(title = "", body = "") {
-      return instance.post("note/create", {
+   async addNote(title = "", body = "") {
+      return await instance.post("note/create", {
          title,
          body,
       });
    },
-   deleteNote(id) {
-      return instance.delete(`note/delete?id=${id}`);
+   async deleteNote(id) {
+      return await instance.delete(`note/delete?id=${id}`);
    },
-   changeNote(id, newTitle, newBody) {
-      return instance.put(`note/update?id=${id}`, {
+   async changeNote(id, newTitle, newBody) {
+      return await instance.put(`note/update?id=${id}`, {
          title: newTitle,
          body: newBody,
       });
@@ -35,14 +35,14 @@ export const noteAPI = {
 };
 
 export const authAPI = {
-   login(username, password) {
-      return instanceForAuth.post("login", {
+   async login(username, password) {
+      return await instanceForAuth.post("login", {
          username,
          password,
       });
    },
-   signup(username, password, email) {
-      return instanceForAuth.post("signup", {
+   async signup(username, password, email) {
+      return await instanceForAuth.post("signup", {
          username,
          password,
          email,

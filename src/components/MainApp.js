@@ -16,7 +16,8 @@ function MainApp() {
          }
          noteAPI.getNotes(setNotes);
       } catch (error) {
-         console.log(error, "Ошибка при загрузке данных");
+         alert("Ошибка при загрузке данных");
+         console.log(error);
       }
    }, [setNotes, navigate]);
 
@@ -26,7 +27,8 @@ function MainApp() {
          noteAPI.addNote(title, body);
          noteAPI.getNotes(setNotes);
       } catch (error) {
-         console.log(error, "Ошибка при изменении");
+         alert("Ошибка при изменении");
+         console.log(error);
       }
    };
 
@@ -40,7 +42,8 @@ function MainApp() {
             })
          );
       } catch (error) {
-         console.log(error, "Ошибка при удалении");
+         alert("Ошибка при удалении");
+         console.log(error);
       }
    };
 
@@ -58,7 +61,8 @@ function MainApp() {
             noteAPI.changeNote(id, newTitle, newBody);
          }
       } catch (error) {
-         console.log(error, "Ошибка при изменении");
+         alert("Ошибка при изменении");
+         console.log(error);
       }
    };
 

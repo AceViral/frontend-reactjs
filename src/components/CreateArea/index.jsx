@@ -56,6 +56,13 @@ function CreateArea({ addNote }) {
    return (
       <div>
          <form className="createAreaForm">
+            {note.body.length > 255 && (
+               <div className="warnBlock">
+                  <i className="bx bx-error-alt bx-tada"></i>
+                  <h1>WARNING</h1>
+                  <p>The size of the note should not exceed 255 characters</p>
+               </div>
+            )}
             {isExpanded && (
                <input
                   value={note.title}
@@ -91,7 +98,8 @@ function CreateArea({ addNote }) {
                onClick={submitButton}
                disabled={note.body === "" && note.title === "" ? true : false}
                style={
-                  note.body === "" && note.title === ""
+                  (note.body === "" && note.title === "") ||
+                  note.body.length > 255
                      ? {
                           background: "#808080",
                           cursor: "auto",

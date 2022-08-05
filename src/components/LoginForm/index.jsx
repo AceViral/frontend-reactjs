@@ -1,11 +1,17 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Formik, ErrorMessage } from "formik";
 import * as Yup from "yup";
-import { Field, Form } from "formik";
-import "./LoginForm.scss";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { authAPI } from "../../api/api";
+import {
+   FormField,
+   SignForm,
+   SubmitButton,
+   SignWrap,
+} from "../../assets/SignStyles";
+
 const LoginForm = () => {
+   const [error, setError] = useState(false);
    const navigate = useNavigate();
    useEffect(() => {
       if (window.localStorage.getItem("token")) {
@@ -22,39 +28,61 @@ const LoginForm = () => {
             username: Yup.string().required("Please enter your username"),
             password: Yup.string().required("Please enter your password"),
          })}
-         onSubmit={(values, { setSubmitting, setStatus }) => {
+         onSubmit={(values, { setSubmitting }) => {
             try {
-               authAPI.login(values.username, values.password).then((res) => {
-                  if (res.data.status === 200) {
-                     window.localStorage.setItem("token", res.data.data.token);
-                     navigate("/", { replace: true });
-                  }
-               });
-               setSubmitting(false);
+               authAPI
+                  .login(values.username, values.password)
+                  .then((res) => {
+                     if (res.data.status === 200) {
+                        setError(false);
+                        setSubmitting(false);
+                        window.localStorage.setItem(
+                           "token",
+                           res.data.data.token
+                        );
+                        navigate("/");
+                     }
+                  })
+                  .catch((error) => {
+                     setError(true);
+                     setSubmitting(false);
+                  });
             } catch (error) {
-               setStatus(error);
                console.log(error, "Ошибка при аутентификации");
             }
          }}
       >
-         {({ values, errors, status, touched, handleSubmit, isSubmitting }) => {
+         {({ values, errors, touched, handleSubmit, isSubmitting }) => {
             return (
-               <div className="LoginWrap">
-                  <Form
+               <SignWrap>
+                  <SignForm
                      name="contact"
                      method="post"
                      onSubmit={handleSubmit}
-                     className="Form"
                   >
+                     {error && (
+                        <div
+                           className="error"
+                           onClick={() => {
+                              setError(false);
+                           }}
+                        >
+                           <i className="bx bx-error-alt bx-tada"></i>
+                           <h1>WARNING</h1>
+                           <p>
+                              The username or password is not correct <br />
+                              Try again
+                           </p>
+                        </div>
+                     )}
                      <h1>Login</h1>
-                     <Field
+                     <FormField
                         type="username"
                         name="username"
                         autoComplete="username"
                         placeholder="Username"
                         error={errors.username && touched.username}
                         value={values.username}
-                        className="Field"
                      />
                      <div className="ErrorBlock">
                         <ErrorMessage name="username">
@@ -62,47 +90,43 @@ const LoginForm = () => {
                         </ErrorMessage>
                      </div>
 
-                     <Field
+                     <FormField
                         type="password"
                         name="password"
                         autoComplete="password"
                         placeholder="Password"
                         error={errors.password && touched.password}
                         value={values.password}
-                        className="Field"
                      />
                      <div className="ErrorBlock">
                         <ErrorMessage name="password">
                            {(msg) => <p>{msg}</p>}
                         </ErrorMessage>
                      </div>
-                     <p>{status}</p>
-                     <button
+                     <SubmitButton
                         type="submit"
+                        color={
+                           (errors.password && touched.password) ||
+                           (errors.username && touched.username)
+                              ? "true"
+                              : ""
+                        }
                         disabled={
-                           (errors.username && touched.username) ||
-                           (errors.password && touched.password)
+                           (errors.password && touched.password) ||
+                           (errors.username && touched.username)
                               ? true
                               : false
                         }
-                        className="SubmitButton"
-                        style={
-                           (errors.username && touched.username) ||
-                           (errors.password && touched.password)
-                              ? {
-                                   cursor: "auto",
-                                   border: "2px solid #ff5050",
-                                }
-                              : {
-                                   cursor: "pointer",
-                                   border: "2px solid #2ecc71",
-                                }
-                        }
                      >
                         {isSubmitting ? `Submiting...` : `Submit`}
-                     </button>
-                  </Form>
-               </div>
+                     </SubmitButton>
+                     <div className="decriptionBlock">
+                        <p>
+                           If you want to signup: <Link to="/">Signup</Link>
+                        </p>
+                     </div>
+                  </SignForm>
+               </SignWrap>
             );
          }}
       </Formik>
